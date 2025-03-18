@@ -1,0 +1,6 @@
+<h1>{{ book.title }}</h1>
+<p>Author: {{ book.author }}</p>
+<p>ISBN: {{ book.isbn }}</p>
+<p>Category: {{ book.category.name }}</p>
+<p>Available Copies: {{ book.available_copies }}</p>
+<a href="{% url 'book_list' %}">Back to Book List</a>
