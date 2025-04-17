@@ -1,27 +1,37 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [loading, setLoading] = useState(false);  // New loading state
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    axios
-      .post('http://127.0.0.1:8000/api/token/', { username, password })
-      .then((response) => {
-        localStorage.setItem('access_token', response.data.access);
-        localStorage.setItem('refresh_token', response.data.refresh);
-        localStorage.setItem('token', response.data.access);
-        alert('Login successful!');
-        // Redirect or further action here
-      })
-      .catch((error) => {
-        console.error('Error logging in:', error);
-        setErrorMsg('Invalid credentials. Please try again.');
+    setLoading(true);  // Set loading to true on form submission
+
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/login/', {
+        username,
+        password,
       });
+
+      const { access, refresh } = response.data;
+
+      localStorage.setItem('access_token', access);
+      localStorage.setItem('refresh_token', refresh);
+      alert('Login successful!');
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Login error:', error);
+      setErrorMsg('Invalid credentials. Please try again.');
+    } finally {
+      setLoading(false);  // Set loading back to false after request is complete
+    }
   };
 
   return (
@@ -51,9 +61,10 @@ const Login = () => {
         </div>
         <button
           type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded"
+          className={`bg-blue-600 text-white px-4 py-2 rounded ${loading ? 'opacity-50' : ''}`}
+          disabled={loading}  // Disable button while loading
         >
-          Login
+          {loading ? 'Logging in...' : 'Login'}
         </button>
       </form>
     </div>

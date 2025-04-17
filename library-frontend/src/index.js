@@ -1,13 +1,12 @@
 import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import reportWebVitals from './reportWebVitals';
-import { AuthProvider } from './context/AuthContext';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Books from './pages/Books';
+import Dashboard from './pages/Dashboard';
 
-function App() {
+const App = () => {
   const accessToken = localStorage.getItem('access_token');
 
   return (
@@ -19,21 +18,17 @@ function App() {
           element={accessToken ? <Books /> : <Navigate to="/login" />}
         />
         <Route
+          path="/dashboard"
+          element={accessToken ? <Dashboard /> : <Navigate to="/login" />}
+        />
+        <Route
           path="/"
-          element={<Navigate to={accessToken ? "/books" : "/login"} />}
+          element={<Navigate to={accessToken ? "/dashboard" : "/login"} />}
         />
       </Routes>
     </Router>
   );
-}
+};
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
-  </React.StrictMode>
-);
-
-reportWebVitals();
+root.render(<App />);
