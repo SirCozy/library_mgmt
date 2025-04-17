@@ -1,5 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import React from 'react';
+import BookList from '../components/BookList'; // Adjust the path if needed
+
+const Books = () => {
+  return (
+    <div className="max-w-2xl mx-auto mt-10 p-4">
+      <h1 className="text-3xl font-bold text-center mb-6">Library Books</h1>
+      <BookList />
+    </div>
+  );
+};
+
+
+
 
 const BookList = () => {
   const [books, setBooks] = useState([]);

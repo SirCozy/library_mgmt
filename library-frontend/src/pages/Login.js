@@ -14,6 +14,7 @@ const Login = () => {
       .then((response) => {
         localStorage.setItem('access_token', response.data.access);
         localStorage.setItem('refresh_token', response.data.refresh);
+        localStorage.setItem('token', response.data.access);
         alert('Login successful!');
         // Redirect or further action here
       })
