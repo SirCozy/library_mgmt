@@ -3,14 +3,13 @@ import axios from 'axios';
 
 const Dashboard = () => {
   const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(true);  // New loading state for books
+  const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
   const accessToken = localStorage.getItem('access_token');
 
   const handleLogout = () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
-    alert('Logged out!');
     window.location.href = '/login';
   };
 
@@ -58,17 +57,14 @@ const Dashboard = () => {
       {books.length > 0 ? (
         <ul className="space-y-2">
           {books.map((book) => (
-            <li
-              key={book.id}
-              className="border p-3 rounded shadow hover:bg-gray-100"
-            >
+            <li key={book.id} className="border p-3 rounded shadow hover:bg-gray-100">
               <p className="font-bold">{book.title}</p>
               <p className="text-sm text-gray-600">Author: {book.author}</p>
             </li>
           ))}
         </ul>
       ) : !loading && !errorMsg ? (
-        <p>No books found or unable to fetch.</p>
+        <p>No books found.</p>
       ) : null}
     </div>
   );
